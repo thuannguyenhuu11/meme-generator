@@ -17,7 +17,8 @@ const SearchPage = async ({ searchParams }: { searchParams: { q: string } }) => 
   });
 
   return (
-    <div>
+    <div className="container mx-auto space-y-8 py-8">
+      <h1 className="text-4xl font-bold">Search Results</h1>
       <ResultList files={files} />
     </div>
   );
