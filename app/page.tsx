@@ -1,22 +1,60 @@
 'use client';
-import { IKImage } from 'imagekitio-next';
+import { Button } from '@/components/ui/button';
+import { IKImage, IKUpload, ImageKitProvider } from 'imagekitio-next';
+import { useState } from 'react';
+
+const urlEndpoint = process.env.NEXT_PUBLIC_URL_ENDPOINT;
+
+const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;
+const authenticator = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/api/auth');
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Request failed with status ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    const { signature, expire, token } = data;
+    return { signature, expire, token };
+  } catch (error) {
+    throw new Error(`Authentication request failed: ${error.message}`);
+  }
+};
 
 export default function Home() {
-  return (
-    <div>
-      {/* <Image
-        src="https://ik.imagekit.io/thuanhaki/tr:w-5000,h-5000/drake-meme.png?updatedAt=1728495391378/"
-        width={500}
-        height={500}
-        alt="image"
-      /> */}
+  const [filePath, setFilePath] = useState('');
 
-      <IKImage
-        urlEndpoint={process.env.NEXT_PUBLIC_URL_ENDPOINT}
-        path="drake-meme.png"
-        transformation={[{ width: '300', height: '300' }, { raw: 'l-text,i-hello world,fs-50,l-end' }]}
-        alt="Alt text"
-      />
+  return (
+    <div className="">
+      <Button variant="destructive">Click me</Button>
+      <ImageKitProvider publicKey={publicKey} urlEndpoint={urlEndpoint} authenticator={authenticator}>
+        {filePath && (
+          <IKImage
+            width={300}
+            height={500}
+            path={filePath}
+            transformation={[{ raw: 'l-text,i-hello world,fs-50,l-end' }]}
+            loading="lazy"
+            alt="Alt text"
+          />
+        )}
+
+        <div>
+          <h2>File upload</h2>
+          <IKUpload
+            fileName="test-upload.png"
+            onError={err => {
+              console.log('error', err);
+            }}
+            onSuccess={res => {
+              console.log('success', res);
+              setFilePath(res.filePath);
+            }}
+          />
+        </div>
+      </ImageKitProvider>
     </div>
   );
 }
