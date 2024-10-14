@@ -1,6 +1,5 @@
 import ResultList from '@/components/Search/ResultList';
 import ImageKit from 'imagekit';
-import { IKImage } from 'imagekitio-next';
 import { unstable_noStore } from 'next/cache';
 
 const imagekit = new ImageKit({
@@ -17,7 +16,7 @@ const SearchPage = async ({ searchParams }: { searchParams: { q: string } }) => 
   });
 
   return (
-    <div className="container mx-auto space-y-8 py-8">
+    <div className="container mx-auto space-y-8 py-8 px-4">
       <h1 className="text-4xl font-bold">Search Results</h1>
       <ResultList files={files} />
     </div>

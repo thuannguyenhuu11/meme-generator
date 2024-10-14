@@ -2,7 +2,8 @@ import { CircleUser, Menu, Package2, Search } from 'lucide-react';
 import Link from 'next/link';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import SearchInput from '@/components/Search/SearchInput';
+import { ModeToggle } from '@/components/ui/mode-toggle';
 import { redirect } from 'next/navigation';
 import {
   DropdownMenu,
@@ -55,14 +56,10 @@ const Header = () => {
         >
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              name="search"
-              type="search"
-              placeholder="Search memes..."
-              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-            />
+            <SearchInput />
           </div>
         </form>
+        <ModeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
