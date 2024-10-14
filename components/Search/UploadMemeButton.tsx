@@ -22,6 +22,7 @@ const UploadMemeButton = () => {
   const router = useRouter();
   const [displayName, setDisplayName] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [tags, setTags] = useState('');
 
   return (
     <Dialog>
@@ -42,18 +43,34 @@ const UploadMemeButton = () => {
             }}
           >
             <div>
-              <Label htmlFor="displayName">Display Name</Label>
-              <Input
-                id="displayName"
-                name="displayName"
-                placeholder="Display Name"
-                required
-                value={displayName}
-                onChange={e => setDisplayName(e.target.value)}
-              />
+              <div className="mb-4">
+                <Label htmlFor="displayName">Display Name</Label>
+                <Input
+                  id="displayName"
+                  name="displayName"
+                  placeholder="Display Name"
+                  required
+                  value={displayName}
+                  onChange={e => setDisplayName(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="tags">Tags</Label>
+                <Input
+                  id="tags"
+                  name="tags"
+                  placeholder="Tags"
+                  required
+                  value={tags}
+                  onChange={e => setTags(e.target.value)}
+                />
+              </div>
+
               <IKUpload
                 fileName="test-upload.png"
                 customMetadata={{ displayName }}
+                tags={[displayName, ...tags.split(',')]}
                 onError={err => {
                   setIsUploading(false);
                   console.log('error', err);
